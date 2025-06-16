@@ -7,7 +7,7 @@ type Command = FactorsTriggerCommand<SqsTrigger, FactorsBuilder>;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let _telemetry_guard = spin_telemetry::init(build_info())?;
+    spin_telemetry::init(build_info())?;
 
     let t = Command::parse();
     t.run().await

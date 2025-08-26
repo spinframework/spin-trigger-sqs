@@ -12,7 +12,8 @@ use utils::MessageUtils;
 
 wasmtime::component::bindgen!({
     path: "sqs.wit",
-    async: true
+    imports: { default: async },
+    exports: { default: async },
 });
 
 use fermyon::spin_sqs::sqs_types as sqs;

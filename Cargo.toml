@@ -1,8 +1,8 @@
 [package]
 name = "trigger-sqs"
-version = "0.9.2"
+version = "0.10.0"
 edition = "2021"
-rust-version = "1.81"
+rust-version = "1.86"
 
 [dependencies]
 anyhow = "1.0.68"

@@ -1,3 +1,3 @@
 # CONTRIBUTING
 
-<https://developer.fermyon.com/spin/contributing>
+<https://spinframework.dev/v3/contributing-spin>

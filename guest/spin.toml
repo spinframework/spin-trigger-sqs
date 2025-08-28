@@ -15,6 +15,6 @@ system_attributes = ["All"]
 message_attributes = ["glonk"]
 
 [component.itowlsontest]
-source = "target/wasm32-wasi/release/guest.wasm"
+source = "target/wasm32-wasip2/release/guest.wasm"
 [component.itowlsontest.build]
-command = "cargo build --target wasm32-wasi --release"
+command = "cargo build --target wasm32-wasip2 --release"

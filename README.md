@@ -14,7 +14,7 @@ spin plugins install trigger-sqs
 The canary release of the SQS trigger plugin represents the most recent commits on `main` and may not be stable, with some features still in progress.
 
 ```sh
-spin plugins install --url https://github.com/fermyon/spin-trigger-sqs/releases/download/canary/trigger-sqs.json
+spin plugins install --url https://github.com/spinframework/spin-trigger-sqs/releases/download/canary/trigger-sqs.json
 ```
 
 ## Build from source

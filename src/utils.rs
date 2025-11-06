@@ -4,7 +4,7 @@ pub trait MessageUtils {
     fn display_id(&self) -> String;
 }
 
-impl MessageUtils for aws_sdk_sqs::model::Message {
+impl MessageUtils for aws_sdk_sqs::types::Message {
     fn display_id(&self) -> String {
         self.message_id().unwrap_or(UNKNOWN_ID).to_owned()
     }

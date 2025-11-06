@@ -1,7 +1,7 @@
-pub use aws_sdk_sqs::model::Message;
-pub use aws_sdk_sqs::model::MessageAttributeValue;
-pub use aws_sdk_sqs::model::MessageSystemAttributeName;
-pub use aws_sdk_sqs::model::QueueAttributeName;
+pub use aws_sdk_sqs::types::Message;
+pub use aws_sdk_sqs::types::MessageAttributeValue;
+pub use aws_sdk_sqs::types::MessageSystemAttributeName;
+pub use aws_sdk_sqs::types::QueueAttributeName;
 pub use aws_sdk_sqs::Client;
 
 use crate::utils::MessageUtils;
@@ -28,7 +28,7 @@ pub async fn get_queue_timeout_secs(client: &Client, queue_url: &str) -> u16 {
                 QUEUE_TIMEOUT_SECS
             }
             Some(attrs) => {
-                match attrs.get(&aws_sdk_sqs::model::QueueAttributeName::VisibilityTimeout) {
+                match attrs.get(&QueueAttributeName::VisibilityTimeout) {
                     None => {
                         tracing::debug!("Queue {queue_url}: no timeout attr found, using default {QUEUE_TIMEOUT_SECS} secs");
                         QUEUE_TIMEOUT_SECS

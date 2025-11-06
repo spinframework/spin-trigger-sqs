@@ -6,8 +6,8 @@ rust-version = "1.86"
 
 [dependencies]
 anyhow = "1.0.68"
-aws-config = "0.52.0"
-aws-sdk-sqs = "0.22.0"
+aws-config = "1.5.0"
+aws-sdk-sqs = "1.5.0"
 clap = { version = "3.1.15", features = ["derive", "env"] }
 futures = "0.3.31"
 serde = "1.0"

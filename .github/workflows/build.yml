@@ -38,7 +38,7 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: 1.87
+          toolchain: 1.88
           targets: ${{ matrix.config.target }}
       - name: Install Spin
         uses: rajatjindal/setup-actions/spin@main
@@ -56,6 +56,10 @@ jobs:
           echo 'linker = "aarch64-linux-gnu-gcc"' >> ${HOME}/.cargo/config.toml
       - name: Build plugin binary
         run: cargo build --release --target ${{ matrix.config.target }} ${{ matrix.config.extraArg }}
+      - name: Run cargo audit
+        run: |
+          cargo install cargo-audit --locked
+          cargo audit
       - name: Copy plugin binary to standard location
         shell: bash
         run: cp target/${{ matrix.config.target }}/release/${{ env.PROGRAM_NAME}}${{ matrix.config.extension }} target/release/${{ env.PROGRAM_NAME}}${{ matrix.config.extension }}

@@ -39,7 +39,7 @@ struct Component {
     pub queue_url: String,
     pub max_messages: u16,
     pub idle_wait: tokio::time::Duration,
-    pub system_attributes: Vec<aws::QueueAttributeName>,
+    pub system_attributes: Vec<aws::MessageSystemAttributeName>,
     pub message_attributes: Vec<String>,
 }
 
@@ -96,7 +96,7 @@ impl<F: RuntimeFactors> Trigger<F> for SqsTrigger {
             std::process::exit(0);
         });
 
-        let config = aws_config::load_from_env().await;
+        let config = aws_config::load_defaults(aws_config::BehaviorVersion::latest()).await;
 
         let client = aws::Client::new(&config);
         let app = Arc::new(trigger_app);
@@ -152,8 +152,8 @@ impl SqsTrigger {
             let rmo = match client
                 .receive_message()
                 .queue_url(&component.queue_url)
-                .max_number_of_messages(component.max_messages.into())
-                .set_attribute_names(Some(component.system_attributes.clone()))
+                .max_number_of_messages(i32::from(component.max_messages))
+                .set_message_system_attribute_names(Some(component.system_attributes.clone()))
                 .set_message_attribute_names(Some(component.message_attributes.clone()))
                 .send()
                 .await
@@ -170,7 +170,7 @@ impl SqsTrigger {
                 }
             };
 
-            if let Some(msgs) = rmo.messages() {
+            if let Some(msgs) = rmo.messages {
                 let msgs = msgs.to_vec();
                 tracing::info!(
                     "Queue {}: received {} message(s)",

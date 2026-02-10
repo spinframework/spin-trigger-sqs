@@ -6,20 +6,22 @@ rust-version = "1.86"
 
 [dependencies]
 anyhow = "1.0.68"
-aws-config = "1.5.0"
-aws-sdk-sqs = "1.5.0"
+aws-config = { version = "1.1.7", features = ["behavior-version-latest", "rt-tokio"], default-features = false}
+aws-sdk-sqs = { version = "1.93.0", features = ["rustls"], default-features = false }
+# Explicitly one of "aws-lc-rs" or "ring" is required for rustls. Our other dependencies require "ring", so we specify that here.
+rustls = { version = "0.23", default-features = false, features = ["ring", "std"] }
 clap = { version = "3.1.15", features = ["derive", "env"] }
 futures = "0.3.31"
 serde = "1.0"
-spin-core = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
-spin-factors = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
-spin-runtime-factors = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
-spin-telemetry = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
-spin-trigger = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
+spin-core = { git = "https://github.com/spinframework/spin", tag = "v3.6.0", default-features = false}
+spin-factors = { git = "https://github.com/spinframework/spin", tag = "v3.6.0", default-features = false}
+spin-runtime-factors = { git = "https://github.com/spinframework/spin", tag = "v3.6.0", default-features =  false}
+spin-telemetry = { git = "https://github.com/spinframework/spin", tag = "v3.6.0", default-features = false}
+spin-trigger = { git = "https://github.com/spinframework/spin", tag = "v3.6.0", default-features = false }
 tokio = { version = "1", features = ["rt", "macros", "time", "signal"] }
 tokio-scoped = "0.2.0"
 tracing = { version = "0.1", features = ["log"] }
-wasmtime = { version = "37.0.1" }
+wasmtime = { version = "41.0.0" }
 
 [target.'cfg(target_os = "linux")'.dependencies]
 # This needs to be an explicit dependency to enable

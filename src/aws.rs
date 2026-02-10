@@ -27,18 +27,16 @@ pub async fn get_queue_timeout_secs(client: &Client, queue_url: &str) -> u16 {
                 );
                 QUEUE_TIMEOUT_SECS
             }
-            Some(attrs) => {
-                match attrs.get(&QueueAttributeName::VisibilityTimeout) {
-                    None => {
-                        tracing::debug!("Queue {queue_url}: no timeout attr found, using default {QUEUE_TIMEOUT_SECS} secs");
-                        QUEUE_TIMEOUT_SECS
-                    }
-                    Some(vt) => {
-                        tracing::debug!("Queue {queue_url}: parsing queue tiemout {vt}");
-                        vt.parse().unwrap_or(QUEUE_TIMEOUT_SECS)
-                    }
+            Some(attrs) => match attrs.get(&QueueAttributeName::VisibilityTimeout) {
+                None => {
+                    tracing::debug!("Queue {queue_url}: no timeout attr found, using default {QUEUE_TIMEOUT_SECS} secs");
+                    QUEUE_TIMEOUT_SECS
                 }
-            }
+                Some(vt) => {
+                    tracing::debug!("Queue {queue_url}: parsing queue tiemout {vt}");
+                    vt.parse().unwrap_or(QUEUE_TIMEOUT_SECS)
+                }
+            },
         },
     }
 }

@@ -7,14 +7,14 @@ description = ""
 version = "0.1.0"
 
 [[trigger.sqs]]
-component = "itowlsontest"
-queue_url = "https://sqs.us-west-2.amazonaws.com/177456779558/itowlsontest"
+component = "localtest"
+queue_url = "http://localhost:9324/000000000000/test-queue"
 max_messages = 1
 idle_wait_seconds = 3
 system_attributes = ["All"]
 message_attributes = ["glonk"]
 
-[component.itowlsontest]
+[component.localtest]
 source = "target/wasm32-wasip2/release/guest.wasm"
-[component.itowlsontest.build]
+[component.localtest.build]
 command = "cargo build --target wasm32-wasip2 --release"

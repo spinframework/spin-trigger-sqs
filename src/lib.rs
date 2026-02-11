@@ -29,6 +29,7 @@ pub struct SqsTriggerConfig {
     pub queue_url: String,
     pub max_messages: Option<u16>,
     pub idle_wait_seconds: Option<u64>,
+    // TODO: remove from the trigger configuration as `AttributeNames` have been deprecated in AWS API reference: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_ReceiveMessage.html#API_ReceiveMessage_RequestSyntax.
     pub system_attributes: Option<Vec<String>>,
     pub message_attributes: Option<Vec<String>>,
 }
@@ -41,12 +42,6 @@ struct Component {
     pub idle_wait: tokio::time::Duration,
     pub system_attributes: Vec<aws::MessageSystemAttributeName>,
     pub message_attributes: Vec<String>,
-}
-
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-struct TriggerMetadata {
-    r#type: String,
 }
 
 // This is a placeholder - we don't yet detect any situations that would require
@@ -96,7 +91,7 @@ impl<F: RuntimeFactors> Trigger<F> for SqsTrigger {
             std::process::exit(0);
         });
 
-        let config = aws_config::load_defaults(aws_config::BehaviorVersion::latest()).await;
+        let config = aws_config::load_from_env().await;
 
         let client = aws::Client::new(&config);
         let app = Arc::new(trigger_app);

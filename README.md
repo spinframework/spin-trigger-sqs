@@ -28,15 +28,51 @@ spin pluginify --install
 
 ## Test
 
-The trigger uses the AWS configuration environment variables - these must be set before running.
-Be sure to set `AWS_DEFAULT_REGION` in your environment to the region of your queue.
+The end-to-end test runs a local ElasticMQ container, builds and installs the plugin, creates a test queue, updates the example guest app to point to the test queue, builds the guest app, starts Spin, sends a test message to the queue, and verifies that the message is processed as expected.
 
-You will also need to change the `queue_url` in `spin.toml` to a queue you have access to.
+### Prerequisites
 
+- [Rust](https://rustup.rs/) (1.90 or later)
+- [Spin](https://developer.fermyon.com/spin/install) (v3.3.0 or later)
+- [AWS CLI](https://aws.amazon.com/cli/)
+- [Docker](https://docs.docker.com/get-docker/) (for running ElasticMQ in a container)
+- `make` utility
+
+### Run Full E2E Test
+
+This will automatically set up ElasticMQ, run the tests, and clean up:
+
+```bash
+make test-e2e-full
 ```
-cd guest
-spin build --up
-```
+
+This uses the [elasticmq.conf](elasticmq.conf) configuration file to set up ElasticMQ with appropriate settings for testing.
+
+### Manual Testing
+
+If you prefer to control ElasticMQ separately:
+
+1. **Start ElasticMQ container:**
+   ```bash
+   make setup-elasticmq
+   ```
+
+   This will:
+   - Pull the `softwaremill/elasticmq:latest` Docker image
+   - Mount the [elasticmq.conf](elasticmq.conf) configuration file
+   - Start a container named `spin-sqs-elasticmq` on port 9324
+
+2. **Run the tests:**
+   ```bash
+   make test-e2e
+   ```
+
+3. **Stop ElasticMQ container:**
+   ```bash
+   make stop-elasticmq
+   ```
+
+   This will stop and remove the container.
 
 ## Limitations
 

@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+name: End-to-End Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  e2e-test:
+    name: E2E Test with ElasticMQ
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Start ElasticMQ
+        run: make setup-elasticmq
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.90
+          targets: wasm32-wasip2
+
+      - name: Install Spin
+        uses: rajatjindal/setup-actions/spin@main
+        with:
+          version: "v3.3.0"
+
+      - name: Install pluginify
+        shell: bash
+        run: spin plugins install --url https://github.com/itowlson/spin-pluginify/releases/download/canary/pluginify.json --yes
+
+      - name: Run E2E tests
+        env:
+          SQS_ENDPOINT: http://localhost:9324
+          AWS_DEFAULT_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          AWS_SESSION_TOKEN: test
+          
+        run: make test-e2e
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spin-logs
+          path: guest/.spin/logs/*

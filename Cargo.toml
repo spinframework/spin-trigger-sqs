@@ -13,11 +13,11 @@ rustls = { version = "0.23", default-features = false, features = ["ring", "std"
 clap = { version = "3.1.15", features = ["derive", "env"] }
 futures = "0.3.31"
 serde = "1.0"
-spin-core = { git = "https://github.com/spinframework/spin", tag = "v3.6.0", default-features = false}
-spin-factors = { git = "https://github.com/spinframework/spin", tag = "v3.6.0", default-features = false}
-spin-runtime-factors = { git = "https://github.com/spinframework/spin", tag = "v3.6.0", default-features =  false}
-spin-telemetry = { git = "https://github.com/spinframework/spin", tag = "v3.6.0", default-features = false}
-spin-trigger = { git = "https://github.com/spinframework/spin", tag = "v3.6.0", default-features = false }
+spin-core = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05", default-features = false}
+spin-factors = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05", default-features = false}
+spin-runtime-factors = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05", default-features =  false}
+spin-telemetry = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05", default-features = false}
+spin-trigger = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05", default-features = false }
 tokio = { version = "1", features = ["rt", "macros", "time", "signal"] }
 tokio-scoped = "0.2.0"
 tracing = { version = "0.1", features = ["log"] }

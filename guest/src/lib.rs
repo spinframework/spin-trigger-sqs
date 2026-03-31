@@ -1,15 +1,15 @@
 wit_bindgen::generate!({
     world: "spin-sqs",
-    path: "..",
+    path: "../sqs3.wit",
 });
 
-use fermyon::spin_sqs::sqs_types as sqs;
+use spin::sqs::sqs_types as sqs;
 
 struct Sqs;
 export!(Sqs);
 
 impl Guest for Sqs {
-    fn handle_queue_message(message: sqs::Message,) -> Result<sqs::MessageAction, sqs::Error> {
+    async fn handle_queue_message(message: sqs::Message,) -> Result<sqs::MessageAction, sqs::Error> {
         println!("I GOT A MESSAGE!  ID: {:?}", message.id);
         for attr in message.message_attributes {
             println!("  ... ATTR {}: {:?}", attr.name, attr.value);

@@ -21,17 +21,17 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: 1.91
+          toolchain: "1.93"
           targets: wasm32-wasip2
 
       - name: Install Spin
-        uses: rajatjindal/setup-actions/spin@main
+        uses: fermyon/actions/spin/setup@v1
         with:
-          version: "v3.3.0"
+          version: "canary"
 
       - name: Install pluginify
         shell: bash
-        run: spin plugins install --url https://github.com/itowlson/spin-pluginify/releases/download/canary/pluginify.json --yes
+        run: spin plugins install pluginify --yes
 
       - name: Run E2E tests
         env:

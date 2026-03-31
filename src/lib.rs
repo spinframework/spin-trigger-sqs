@@ -11,12 +11,12 @@ use spin_trigger::{cli::NoCliArgs, App, Trigger, TriggerApp};
 use utils::MessageUtils;
 
 wasmtime::component::bindgen!({
-    path: "sqs.wit",
+    path: "sqs3.wit",
     imports: { default: async },
     exports: { default: async },
 });
 
-use fermyon::spin_sqs::sqs_types as sqs;
+use spin::sqs::sqs_types as sqs;
 
 pub struct SqsTrigger {
     queue_components: Vec<Component>,
@@ -273,10 +273,12 @@ impl<F: RuntimeFactors> SqsMessageProcessor<F> {
 
         let instance = SpinSqs::new(&mut store, &instance)?;
 
-        match instance
-            .call_handle_queue_message(&mut store, &message)
-            .await
-        {
+        let res = std::pin::pin!(store.as_mut().run_concurrent(async |accessor| {
+            instance.call_handle_queue_message(accessor, message).await
+        }))
+        .await?;
+
+        match res {
             Ok(Ok(action)) => {
                 tracing::trace!("Message {msg_id}: component {component_id} completed okay");
                 Ok(action)
